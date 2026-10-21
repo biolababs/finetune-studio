@@ -1,16 +1,24 @@
 {
-  "name": "liquid-finetune-ui",
+  "name": "finetune-studio",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "The unofficial browser-only UI for Liquid Finetune.",
+  "description": "An unofficial browser-only configuration studio for Liquid Finetune.",
   "scripts": {
     "dev": "node scripts/serve.mjs",
-    "test": "node --test tests/core.test.mjs tests/dom.test.mjs tests/server.test.mjs",
+    "test": "node --test tests/core.test.mjs tests/dom.test.mjs tests/server.test.mjs tests/workflow.test.mjs",
     "build": "node scripts/build.mjs",
     "check": "npm test && npm run build && node --test tests/dist.test.mjs"
   },
   "engines": {
     "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/biolababs/finetune-studio.git"
+  },
+  "homepage": "https://biolababs.github.io/finetune-studio/",
+  "bugs": {
+    "url": "https://github.com/biolababs/finetune-studio/issues"
   }
 }

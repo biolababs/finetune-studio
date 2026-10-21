@@ -883,6 +883,33 @@ svg {
   text-align: center;
 }
 
+.disclaimer-note {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  max-width: 940px;
+  margin: 22px auto 0;
+  padding: 15px 18px;
+  border: 1px solid rgba(111, 76, 202, 0.16);
+  border-radius: 14px;
+  color: #625e69;
+  background: rgba(246, 242, 255, 0.72);
+  font-size: 10px;
+  line-height: 1.65;
+}
+
+.disclaimer-note strong {
+  color: #593b9b;
+  font-size: 9px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.disclaimer-note p {
+  margin: 0;
+}
+
 .search-box {
   position: relative;
   display: block;
@@ -1238,6 +1265,11 @@ a:focus-visible {
   .trust-row {
     flex-wrap: wrap;
     gap: 10px 15px;
+  }
+
+  .disclaimer-note {
+    grid-template-columns: 1fr;
+    gap: 5px;
   }
 
   .summary,

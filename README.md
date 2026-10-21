@@ -1,34 +1,47 @@
 # Finetune Studio
 
-An unofficial, browser-only configuration studio for
-[Liquid Finetune](https://github.com/Liquid4All/liquid-finetune).
+**Design, validate, and export Liquid Finetune configurations from a private,
+browser-only workspace.**
 
-[Open Finetune Studio](https://biolababs.github.io/liquid-finetune-ui/) ·
-[View Liquid Finetune](https://github.com/Liquid4All/liquid-finetune)
+[Launch Finetune Studio](https://biolababs.github.io/finetune-studio/) ·
+[View the upstream CLI](https://github.com/Liquid4All/liquid-finetune) ·
+[Report an issue](https://github.com/biolababs/finetune-studio/issues)
 
-[![Deploy Finetune Studio](https://github.com/biolababs/liquid-finetune-ui/actions/workflows/pages.yml/badge.svg)](https://github.com/biolababs/liquid-finetune-ui/actions/workflows/pages.yml)
+[![Deploy Finetune Studio](https://github.com/biolababs/finetune-studio/actions/workflows/pages.yml/badge.svg)](https://github.com/biolababs/finetune-studio/actions/workflows/pages.yml)
 
-Finetune Studio turns guided training choices into deterministic YAML you can
-download and run from your own Liquid Finetune checkout. It does not upload
-configuration data or execute training.
+Finetune Studio is an independent community interface for
+[Liquid Finetune](https://github.com/Liquid4All/liquid-finetune). It converts
+guided training choices into deterministic YAML without uploading the
+configuration or running training on a remote service.
 
 > [!IMPORTANT]
-> Finetune Studio is an independent community project. It is not affiliated
-> with or endorsed by Liquid AI. The Liquid Finetune CLI remains the source of
-> truth for complete validation and execution.
+> This project is not affiliated with or endorsed by Liquid AI. The Liquid
+> Finetune CLI is the source of truth for complete validation and execution.
 
-## Highlights
+## Product workflow
 
-- Guided configuration for all 11 bundled Liquid Finetune training modes.
-- Deterministic YAML generation and browser-side preflight checks.
-- Local YAML import, editing, copying, and download.
-- Ready-to-copy `uv run liquid-finetune ...` command.
-- Responsive interface that works without an account or backend.
-- Zero runtime dependencies and a deterministic static build.
+```mermaid
+flowchart LR
+    A[Choose a recipe] --> B[Adjust parameters]
+    B --> C[Generate YAML]
+    C --> D[Run browser preflight]
+    D --> E[Download and train locally]
+```
+
+## Capabilities
+
+| Area          | What Finetune Studio provides                                    |
+| ------------- | ---------------------------------------------------------------- |
+| Guided setup  | Curated starting values for 11 training modes                    |
+| Configuration | Deterministic YAML generation with direct editing                |
+| Preflight     | Browser-side checks for required fields and recipe compatibility |
+| File handling | Local import, copy, and download with no upload step             |
+| Handoff       | A ready-to-copy `uv run liquid-finetune ...` command             |
+| Delivery      | A dependency-free static build deployable through GitHub Pages   |
 
 ## Supported recipes
 
-| Category               | Recipes            |
+| Family                 | Recipes            |
 | ---------------------- | ------------------ |
 | Text tuning            | SFT, DPO, KTO      |
 | Retrieval              | Embedding, ColBERT |
@@ -36,73 +49,119 @@ configuration data or execute training.
 | Mixture of experts     | MoE SFT, MoE DPO   |
 | Reinforcement learning | GRPO, VLM GRPO     |
 
-The included values are starting points. Review model names, dataset paths,
-reward recipes, and resource requirements before launching a training run.
+These recipes are starting points. Confirm model identifiers, dataset schemas,
+reward implementations, compute requirements, and training parameters before
+launching a run.
 
-## Use the web app
+## Use the hosted application
 
-1. Open [Finetune Studio](https://biolababs.github.io/liquid-finetune-ui/).
-2. Choose a recipe and adjust the model, dataset, and training parameters.
-3. Generate the YAML and run browser preflight.
-4. Download the configuration into your Liquid Finetune checkout.
-5. Run the generated CLI command locally.
+1. Open [Finetune Studio](https://biolababs.github.io/finetune-studio/).
+2. Select the closest training recipe.
+3. Review the model, dataset, and optimization parameters.
+4. Generate YAML and run browser preflight.
+5. Download the file into a trusted Liquid Finetune checkout.
+6. Run the generated command locally.
 
-Finetune Studio does not install models, resolve local paths, or run training.
+Finetune Studio does not install dependencies, download models, access datasets,
+or execute training.
 
-## Run locally
+## Local development
 
-Node.js 20 or newer is required. The project has no runtime dependencies.
+### Requirements
+
+- Node.js 20 or newer.
+- A modern browser.
+- No package installation is required; the project has zero runtime
+  dependencies.
+
+### Start the preview
 
 ```bash
-git clone https://github.com/biolababs/liquid-finetune-ui.git
-cd liquid-finetune-ui
+git clone https://github.com/biolababs/finetune-studio.git
+cd finetune-studio
 npm run dev
 ```
 
-Open `http://127.0.0.1:4173`. The preview server listens only on loopback and
-rejects unrecognized host headers. To select another loopback port:
+Open `http://127.0.0.1:4173`. The preview server binds only to loopback and
+rejects unrecognized host headers. Select another loopback port with:
 
 ```bash
 npm run dev -- --port 8088
 ```
 
-## Test and build
+### Run the quality gate
 
 ```bash
 npm run check
 ```
 
-This runs the configuration, DOM/privacy, preview-server, and deployable-artifact
-checks. The static site is written to `dist/`.
+The quality gate runs configuration, parser, DOM/privacy, preview-server,
+workflow-security, and build-artifact checks. The deployable site is written to
+`dist/`.
 
-## Privacy and security
-
-- No API, database, authentication, cookies, analytics, or telemetry.
-- No network requests from the application JavaScript.
-- Imported YAML is limited to 1 MB and remains in the current browser tab.
-- A restrictive content security policy blocks connections and embedded objects.
-- The development server binds to `127.0.0.1`, never a wildcard interface.
-
-Do not place secrets in configuration files or the static bundle. Everything
-published through GitHub Pages is publicly downloadable. See
-[SECURITY.md](./SECURITY.md) for vulnerability reporting.
-
-## Project structure
+## Architecture
 
 ```text
 index.html               Static application shell
-src/app.js               Browser interactions
-src/core.js              Config generation, YAML, and validation
+src/app.js               Browser interaction and file handling
+src/core.js              Recipe data, YAML generation, parsing, and validation
 src/styles.css           Responsive visual system
-scripts/serve.mjs        Loopback-only local preview
 scripts/server-core.mjs  Preview-server security boundaries
+scripts/serve.mjs        Loopback-only development server
 scripts/build.mjs        Deterministic static build
 .github/workflows/       GitHub Pages deployment
-tests/                   Core, DOM, security, and artifact checks
+.github/dependabot.yml   Automated GitHub Actions update checks
+tests/                   Functional, privacy, security, and artifact checks
 ```
+
+The public site contains only HTML, CSS, and JavaScript. There is no application
+API or server-side state.
+
+## Security and privacy
+
+| Boundary           | Control                                                                    |
+| ------------------ | -------------------------------------------------------------------------- |
+| Configuration data | Remains in the current browser tab                                         |
+| Network access     | Blocked for application JavaScript by Content Security Policy              |
+| Persistent state   | No cookies, local storage, IndexedDB, database, or telemetry               |
+| YAML import        | Limited to 1 MB and treated as text                                        |
+| Local preview      | Explicit file allowlist, host validation, and loopback-only bind           |
+| Deployment         | Per-job GitHub Actions permissions and non-persistent checkout credentials |
+
+Never add credentials or private data to the repository or static build.
+Everything published through GitHub Pages is anonymously downloadable. See
+[SECURITY.md](./SECURITY.md) for the reporting process and full security model.
+
+## Validation boundaries
+
+Browser preflight intentionally covers the mapping-based configuration subset
+used by the guided recipes. Advanced YAML sequences, custom reward code, local
+paths, environment setup, model compatibility, and runtime behavior must be
+validated by Liquid Finetune in the target environment.
+
+## Deployment
+
+Pushes to `main` run the test suite, build the static artifact, and deploy it
+through GitHub Pages. Dependabot checks the GitHub Actions dependencies weekly.
 
 ## Contributing
 
-Issues and focused pull requests are welcome. Please run `npm run check` before
-submitting a change and keep the application browser-only unless a proposal has
-first established a clear need for a backend.
+Focused issues and pull requests are welcome. Before submitting a change:
+
+1. Keep the browser application free of network and persistent-storage calls.
+2. Do not introduce a backend without an approved design and threat model.
+3. Add tests for behavior and security boundaries affected by the change.
+4. Run `npm run check` and ensure the complete gate passes.
+
+## Disclaimer
+
+Finetune Studio is an unofficial community project and is not affiliated with,
+sponsored by, or endorsed by Liquid AI. Generated configurations are provided
+as starting points and do not guarantee compatibility, performance, safety, or
+training results. Users are responsible for reviewing configurations, securing
+their environment, and complying with all applicable model, dataset, software,
+and content licenses.
+
+Liquid Finetune and associated product names belong to their respective owners.
+This repository contains only the Finetune Studio interface and does not
+redistribute Liquid Finetune itself.

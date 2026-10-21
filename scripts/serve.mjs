@@ -21,9 +21,10 @@ function securityHeaders(response) {
   response.setHeader("Cache-Control", "no-store");
   response.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; img-src 'self' data:; style-src 'self'; " +
-      "script-src 'self'; connect-src 'none'; object-src 'none'; " +
-      "base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+    "default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self'; " +
+      "connect-src 'none'; object-src 'none'; frame-src 'none'; " +
+      "worker-src 'none'; media-src 'none'; base-uri 'none'; " +
+      "form-action 'none'; frame-ancestors 'none'",
   );
   response.setHeader(
     "Permissions-Policy",

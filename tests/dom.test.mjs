@@ -48,10 +48,15 @@ test("the browser app performs no network or persistent-storage calls", () => {
 test("the document declares a restrictive static-site policy", () => {
   assert.match(html, /connect-src 'none'/);
   assert.match(html, /object-src 'none'/);
+  assert.match(html, /frame-src 'none'/);
+  assert.match(html, /worker-src 'none'/);
   assert.match(html, /form-action 'none'/);
+  assert.doesNotMatch(html, /img-src 'self' data:/);
   assert.match(html, /No sign-in/);
   assert.match(html, /No telemetry/);
   assert.match(html, /Not affiliated with or endorsed by Liquid AI/);
+  assert.match(html, /aria-label="Disclaimer"/);
+  assert.match(html, /Generated configurations\s+are starting points/);
 });
 
 test("external links suppress referrer information", () => {

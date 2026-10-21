@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  MAX_YAML_CHARACTERS,
   PROFILES,
   createConfig,
   filenameForProject,
@@ -98,6 +99,21 @@ test("parser rejects tabs and duplicate keys", () => {
     () => parseSimpleYaml("project_name: one\nproject_name: two"),
     /duplicate key/,
   );
+});
+
+test("parser rejects JavaScript-special keys", () => {
+  for (const key of ["__proto__", "constructor", "prototype"]) {
+    assert.throws(
+      () => parseSimpleYaml(`${key}:\n  polluted: true`),
+      /not allowed/,
+    );
+  }
+  assert.equal({}.polluted, undefined);
+});
+
+test("parser rejects oversized input", () => {
+  const oversized = `project_name: ${"a".repeat(MAX_YAML_CHARACTERS)}`;
+  assert.throws(() => parseSimpleYaml(oversized), /characters or fewer/);
 });
 
 test("parser rejects unexpected indentation", () => {

@@ -9,7 +9,7 @@
     />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; media-src 'none'; base-uri 'none'; form-action 'none'"
     />
     <meta name="referrer" content="no-referrer" />
     <title>Finetune Studio — Unofficial Liquid Finetune UI</title>
@@ -319,6 +319,17 @@
           Finetune CLI is the source of truth for complete validation, local
           paths, custom rewards, and runtime dependencies.
         </p>
+
+        <aside class="disclaimer-note" aria-label="Disclaimer">
+          <strong>Disclaimer</strong>
+          <p>
+            Finetune Studio is an unofficial community project and is not
+            affiliated with or endorsed by Liquid AI. Generated configurations
+            are starting points, not guarantees of compatibility or results.
+            Review all settings and comply with applicable model and dataset
+            licenses before training.
+          </p>
+        </aside>
       </section>
 
       <section class="recipes section-wrap" id="templates">

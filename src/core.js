@@ -1,3 +1,7 @@
+export const MAX_YAML_CHARACTERS = 1_000_000;
+
+const BLOCKED_YAML_KEYS = new Set(["__proto__", "constructor", "prototype"]);
+
 const common = {
   model: "LFM2-1.2B",
   limit: 1000,
@@ -308,9 +312,16 @@ function parseScalar(value, lineNumber) {
 }
 
 export function parseSimpleYaml(source) {
+  const normalizedSource = String(source);
+  if (normalizedSource.length > MAX_YAML_CHARACTERS) {
+    throw new Error(
+      `YAML input must be ${MAX_YAML_CHARACTERS.toLocaleString()} characters or fewer.`,
+    );
+  }
+
   const root = {};
   const stack = [{ indent: -1, value: root }];
-  const lines = String(source).replaceAll("\r\n", "\n").split("\n");
+  const lines = normalizedSource.replaceAll("\r\n", "\n").split("\n");
 
   for (let index = 0; index < lines.length; index += 1) {
     const rawLine = lines[index];
@@ -344,6 +355,9 @@ export function parseSimpleYaml(source) {
     }
     const parent = stack.at(-1).value;
     const [, key, rawValue] = match;
+    if (BLOCKED_YAML_KEYS.has(key)) {
+      throw new Error(`Line ${lineNumber}: key "${key}" is not allowed.`);
+    }
     if (Object.hasOwn(parent, key)) {
       throw new Error(`Line ${lineNumber}: duplicate key "${key}".`);
     }
