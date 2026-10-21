@@ -385,34 +385,6 @@ svg {
   transform: translate(-50%, -50%) rotate(29deg);
 }
 
-.liquid-object {
-  position: absolute;
-  z-index: 2;
-  top: 50%;
-  left: 50%;
-  width: 225px;
-  height: 265px;
-  transform: translate(-50%, -49%) rotate(9deg);
-  background: linear-gradient(145deg, #121016, #47364f 62%, #9d75ad);
-  filter: drop-shadow(0 34px 38px rgba(85, 54, 105, 0.27));
-  clip-path: polygon(50% 0, 97% 36%, 83% 91%, 31% 100%, 0 52%);
-}
-
-.liquid-cutout {
-  position: absolute;
-  inset: 19px 21px 27px 27px;
-  background: linear-gradient(150deg, #f4ddfc, #cfeaf8);
-  clip-path: polygon(50% 0, 97% 36%, 83% 91%, 31% 100%, 0 52%);
-}
-
-.liquid-cutout::after {
-  position: absolute;
-  inset: 59px 51px 68px;
-  border-radius: 48% 52% 55% 45%;
-  background: #161319;
-  content: "";
-}
-
 .float-card {
   position: absolute;
   z-index: 4;
