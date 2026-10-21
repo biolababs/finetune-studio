@@ -1,4 +1,4 @@
-import { join, normalize } from "node:path";
+import { join, posix } from "node:path";
 
 export const HOST = "127.0.0.1";
 export const DEFAULT_PORT = 4173;
@@ -29,7 +29,8 @@ export function resolveRequestPath(pathname, projectRoot) {
 
   const requested =
     decodedPathname === "/" ? "index.html" : decodedPathname.slice(1);
-  const normalized = normalize(requested);
+  // Request paths use URL separators on every host OS.
+  const normalized = posix.normalize(requested);
   if (
     normalized.startsWith("..") ||
     normalized.includes("/../") ||
