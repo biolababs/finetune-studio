@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="The unofficial browser-only UI for Liquid Finetune."
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <title>Finetune Studio — Unofficial Liquid Finetune UI</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <div class="page-glow glow-one" aria-hidden="true"></div>
+    <div class="page-glow glow-two" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Finetune Studio home">
+        <span class="brand-mark" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+        <span class="brand-name">Finetune <strong>Studio</strong></span>
+        <span class="community-badge">Unofficial UI</span>
+      </a>
+      <nav class="topnav" aria-label="Primary navigation">
+        <a href="#builder">Builder</a>
+        <a href="#templates">Recipes</a>
+        <a href="#privacy">Privacy</a>
+        <a
+          class="github-link"
+          href="https://github.com/Liquid4All/liquid-finetune"
+          rel="noreferrer"
+        >
+          Liquid Finetune
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 17 17 7M8 7h9v9" />
+          </svg>
+        </a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero section-wrap">
+        <div class="hero-copy">
+          <div class="browser-pill">
+            <span></span>
+            Runs entirely in your browser
+          </div>
+          <h1>Fine-tuning configs,<br /><em>without the friction.</em></h1>
+          <p>
+            Choose a training recipe, tune the important parameters, and export
+            clean YAML for Liquid Finetune. Nothing is uploaded or executed.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-dark" href="#builder">
+              Build a configuration
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </a>
+            <a class="button button-glass" href="#templates">Browse recipes</a>
+          </div>
+          <div class="trust-row" aria-label="Product attributes">
+            <span><i>✓</i> No sign-in</span>
+            <span><i>✓</i> No telemetry</span>
+            <span><i>✓</i> No backend</span>
+          </div>
+        </div>
+
+        <div class="hero-art" aria-hidden="true">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="liquid-object">
+            <div class="liquid-cutout"></div>
+          </div>
+          <div class="float-card float-model">
+            <span>Model</span>
+            <strong>LFM2</strong>
+          </div>
+          <div class="float-card float-method">
+            <span>Recipe</span>
+            <strong>SFT + LoRA</strong>
+          </div>
+          <div class="float-card float-status">
+            <span class="status-dot"></span>
+            CLI ready
+          </div>
+        </div>
+      </section>
+
+      <section class="summary section-wrap" aria-label="Studio summary">
+        <article>
+          <span>Training recipes</span>
+          <strong id="profileCount">11</strong>
+          <small>Text, vision, retrieval, MoE, and RL</small>
+        </article>
+        <article>
+          <span>Data uploaded</span>
+          <strong>0 bytes</strong>
+          <small>Your config never leaves the browser</small>
+        </article>
+        <article>
+          <span>Current status</span>
+          <strong id="summaryStatus">Draft</strong>
+          <small id="summaryDetail">Ready for browser preflight</small>
+        </article>
+      </section>
+
+      <section class="builder-section section-wrap" id="builder">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">Configuration workspace</span>
+            <h2>Go from idea to YAML.</h2>
+          </div>
+          <p>
+            Start with a maintained recipe, then edit every generated field
+            directly before downloading.
+          </p>
+        </div>
+
+        <div class="builder-layout">
+          <article class="panel form-panel">
+            <div class="panel-heading">
+              <div class="heading-title">
+                <span class="step">01</span>
+                <div>
+                  <small>Guided setup</small>
+                  <h3>Describe the run</h3>
+                </div>
+              </div>
+              <button class="quiet-button" id="resetButton" type="button">
+                Reset
+              </button>
+            </div>
+
+            <form id="configForm">
+              <label class="field field-wide">
+                <span>Training recipe</span>
+                <select id="trainingType" required></select>
+                <small id="profileDescription"></small>
+              </label>
+
+              <div class="field-grid two-columns">
+                <label class="field">
+                  <span>Project name</span>
+                  <input
+                    id="projectName"
+                    value="my_sft_project"
+                    pattern="[A-Za-z0-9_-]+"
+                    autocomplete="off"
+                    required
+                  />
+                </label>
+                <label class="field">
+                  <span>Model</span>
+                  <input
+                    id="modelName"
+                    value="LFM2-1.2B"
+                    autocomplete="off"
+                    required
+                  />
+                </label>
+              </div>
+
+              <label class="field field-wide">
+                <span>Dataset path or Hugging Face ID</span>
+                <input
+                  id="datasetPath"
+                  value="HuggingFaceTB/smoltalk"
+                  autocomplete="off"
+                  required
+                />
+              </label>
+
+              <div class="field-grid three-columns">
+                <label class="field">
+                  <span>Dataset limit</span>
+                  <input id="datasetLimit" type="number" min="1" value="1000" />
+                </label>
+                <label class="field">
+                  <span>Validation split</span>
+                  <input
+                    id="testSize"
+                    type="number"
+                    min="0.001"
+                    max="0.999"
+                    step="0.01"
+                    value="0.2"
+                  />
+                </label>
+                <label class="field">
+                  <span>Epochs</span>
+                  <input
+                    id="epochs"
+                    type="number"
+                    min="0.01"
+                    step="0.5"
+                    value="3"
+                  />
+                </label>
+              </div>
+
+              <div class="field-grid three-columns">
+                <label class="field">
+                  <span>Batch size</span>
+                  <input id="batchSize" type="number" min="1" value="2" />
+                </label>
+                <label class="field">
+                  <span>Gradient steps</span>
+                  <input id="gradientSteps" type="number" min="1" value="1" />
+                </label>
+                <label class="field">
+                  <span>Learning rate</span>
+                  <input
+                    id="learningRate"
+                    value="0.00002"
+                    inputmode="decimal"
+                  />
+                </label>
+              </div>
+
+              <label class="toggle-row" id="peftRow" for="usePeft">
+                <span>
+                  <strong>Parameter-efficient fine-tuning</strong>
+                  <small>Generate the recommended LoRA configuration.</small>
+                </span>
+                <input id="usePeft" type="checkbox" checked />
+                <span class="toggle" aria-hidden="true"></span>
+              </label>
+
+              <button class="button button-dark button-full" type="submit">
+                Generate YAML
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </button>
+            </form>
+          </article>
+
+          <article class="panel editor-panel">
+            <div class="panel-heading">
+              <div class="heading-title">
+                <span class="step">02</span>
+                <div>
+                  <small>Browser preflight</small>
+                  <h3>Review and export</h3>
+                </div>
+              </div>
+              <div class="editor-actions">
+                <button class="quiet-button" id="importButton" type="button">
+                  Import
+                </button>
+                <button class="quiet-button" id="copyYamlButton" type="button">
+                  Copy
+                </button>
+                <button class="quiet-button" id="downloadButton" type="button">
+                  Download
+                </button>
+              </div>
+            </div>
+
+            <div class="code-window">
+              <div class="code-toolbar">
+                <span
+                  ><i></i><b id="activeFilename">my_sft_project.yaml</b></span
+                >
+                <span id="lineCount">0 lines</span>
+              </div>
+              <textarea
+                id="configEditor"
+                aria-label="Liquid Finetune YAML configuration"
+                spellcheck="false"
+              ></textarea>
+            </div>
+
+            <div class="validation-card" id="validationCard" aria-live="polite">
+              <span class="validation-icon">?</span>
+              <div>
+                <strong>Waiting for preflight</strong>
+                <p>
+                  Checks core fields and recipe compatibility in this browser.
+                </p>
+              </div>
+            </div>
+
+            <button
+              class="button button-violet button-full"
+              id="validateButton"
+              type="button"
+            >
+              Run browser preflight
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m7 12 3 3 7-7" />
+              </svg>
+            </button>
+          </article>
+        </div>
+
+        <article class="command-bar">
+          <div class="command-copy">
+            <span class="step step-dark">03</span>
+            <div>
+              <small>Run locally with Liquid Finetune</small>
+              <code id="commandPreview"
+                >uv run liquid-finetune my_sft_project.yaml</code
+              >
+            </div>
+          </div>
+          <button
+            class="button button-command"
+            id="copyCommandButton"
+            type="button"
+          >
+            Copy command
+          </button>
+        </article>
+
+        <p class="cli-note">
+          Browser preflight covers core configuration fields. The Liquid
+          Finetune CLI is the source of truth for complete validation, local
+          paths, custom rewards, and runtime dependencies.
+        </p>
+      </section>
+
+      <section class="recipes section-wrap" id="templates">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">Starting points</span>
+            <h2>Choose a training recipe.</h2>
+          </div>
+          <label class="search-box">
+            <span class="sr-only">Filter recipes</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="6" />
+              <path d="m16 16 4 4" />
+            </svg>
+            <input id="recipeSearch" placeholder="Filter recipes" />
+          </label>
+        </div>
+        <div class="recipe-grid" id="recipeGrid"></div>
+      </section>
+
+      <section class="privacy section-wrap" id="privacy">
+        <div class="privacy-copy">
+          <span class="eyebrow light">Designed for a public web</span>
+          <h2>Your configuration stays yours.</h2>
+          <p>
+            Finetune Studio has no server API, account system, cookies,
+            analytics, database, or training executor. Importing a file reads it
+            only inside the current browser tab.
+          </p>
+          <a
+            href="https://github.com/Liquid4All/liquid-finetune"
+            rel="noreferrer"
+          >
+            Continue with Liquid Finetune
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 17 17 7M8 7h9v9" />
+            </svg>
+          </a>
+        </div>
+        <div class="privacy-grid">
+          <article>
+            <span>01</span>
+            <strong>Build</strong>
+            <p>Select a recipe and adjust the training parameters.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <strong>Preflight</strong>
+            <p>Catch common YAML and compatibility problems in-browser.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <strong>Download</strong>
+            <p>Move the YAML into your own Liquid Finetune checkout.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer section-wrap">
+      <div class="brand footer-brand">
+        <span class="brand-mark small" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+        <span class="brand-name">Finetune <strong>Studio</strong></span>
+      </div>
+      <p>
+        Unofficial UI. Not affiliated with or endorsed by Liquid AI. No training
+        is performed on this site.
+      </p>
+    </footer>
+
+    <input
+      id="fileInput"
+      class="sr-only"
+      type="file"
+      accept=".yaml,.yml,text/yaml"
+    />
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>

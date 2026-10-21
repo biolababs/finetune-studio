@@ -1,0 +1,16 @@
+{
+  "name": "liquid-finetune-ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "The unofficial browser-only UI for Liquid Finetune.",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "test": "node --test tests/core.test.mjs tests/dom.test.mjs tests/server.test.mjs",
+    "build": "node scripts/build.mjs",
+    "check": "npm test && npm run build && node --test tests/dist.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
