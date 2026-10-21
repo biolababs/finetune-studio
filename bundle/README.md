@@ -5,6 +5,7 @@ This download contains three components together:
 - `studio/` is the browser configuration builder for Liquid Finetune.
 - `webslm-trainer/` is WebSLM's text, audio, and video LoRA trainer and desktop UI.
 - `liquid-finetune/` is Liquid AI's full training CLI, included under its MIT license in `liquid-finetune/LICENSE`.
+- `llama-factory/` is the audio/video training backend used by WebSLM Trainer, included under its Apache-2.0 license in `llama-factory/LICENSE`.
 
 The bundle contains source code and sample data. It does not contain model weights, Python packages, GPU drivers, or a trained model. `SOURCES.txt` records the exact upstream commits. The components use separate Python environments because their dependency versions differ.
 
@@ -31,7 +32,14 @@ py -m venv .venv
 .venv\Scripts\python -m webslm_trainer desktop
 ```
 
-For audio and video, follow `webslm-trainer/README.md` to set up LLaMA-Factory in another environment. The desktop UI then launches that backend locally.
+For audio and video, install the bundled `llama-factory/` source in another Python 3.11–3.13 environment. For example, from the bundle root on Windows:
+
+```powershell
+py -3.11 -m venv llama-factory\.venv
+llama-factory\.venv\Scripts\python -m pip install -e .\llama-factory
+```
+
+In the WebSLM desktop app, set **LLaMA-Factory Python** to `llama-factory\.venv\Scripts\python.exe` using an absolute path. Media training still needs compatible GPU hardware and installed Python packages.
 
 ## Run Liquid Finetune
 

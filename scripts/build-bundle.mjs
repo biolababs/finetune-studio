@@ -16,6 +16,10 @@ const sources = {
     url: "https://github.com/Liquid4All/liquid-finetune.git",
     sha: "d9cc23dae5a16498ab7dc11958b80ca803e0440a",
   },
+  media: {
+    url: "https://github.com/hiyouga/LLaMA-Factory.git",
+    sha: "438b3611d1538547876c9e7af044b022dc0e53f2",
+  },
 };
 
 function run(program, args, cwd = root) {
@@ -50,13 +54,14 @@ try {
   for (const [name, source] of Object.entries(sources)) {
     const checkout = join(temporary, `${name}-checkout`);
     await clonePinned(source, checkout);
-    const folder = name === "trainer" ? "webslm-trainer" : "liquid-finetune";
+    const folder = { trainer: "webslm-trainer", liquid: "liquid-finetune", media: "llama-factory" }[name];
     await cp(checkout, join(stage, folder), { recursive: true, filter: include });
   }
 
   await writeFile(join(stage, "SOURCES.txt"),
     `WebSLM Trainer: ${sources.trainer.url} @ ${sources.trainer.sha}\n` +
-    `Liquid Finetune: ${sources.liquid.url} @ ${sources.liquid.sha}\n`);
+    `Liquid Finetune: ${sources.liquid.url} @ ${sources.liquid.sha}\n` +
+    `LLaMA-Factory: ${sources.media.url} @ ${sources.media.sha}\n`);
   await mkdir(release, { recursive: true });
   await rm(archive, { force: true });
   run("tar", ["-czf", archive, "finetune-studio"], temporary);
