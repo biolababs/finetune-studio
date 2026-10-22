@@ -50,6 +50,7 @@ try {
   await cp(join(root, "dist"), join(stage, "studio"), { recursive: true });
   await cp(join(root, "bundle", "README.md"), join(stage, "README.md"));
   await cp(join(root, "bundle", "launch.py"), join(stage, "launch.py"));
+  await cp(join(root, "bundle", "studio_core.py"), join(stage, "studio_core.py"));
 
   for (const [name, source] of Object.entries(sources)) {
     const checkout = join(temporary, `${name}-checkout`);
