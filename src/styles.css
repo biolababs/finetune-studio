@@ -446,6 +446,43 @@ svg {
   margin-top: 16px;
 }
 
+.desktop-callout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
+  margin-top: 16px;
+  padding: 32px 40px;
+  border: 1px solid rgba(88, 65, 148, 0.17);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(120deg, #fff 0%, #f2edff 100%);
+  scroll-margin-top: 92px;
+}
+
+.desktop-callout h2 {
+  margin: 7px 0 9px;
+  font-size: clamp(24px, 2.5vw, 34px);
+  letter-spacing: -0.045em;
+}
+
+.desktop-callout p {
+  max-width: 740px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.desktop-callout .desktop-note {
+  margin-top: 10px;
+  font-size: 11px;
+}
+
+.desktop-actions {
+  display: grid;
+  gap: 10px;
+  flex: 0 0 190px;
+}
+
 .summary article {
   display: grid;
   padding: 21px 23px;
@@ -1221,6 +1258,17 @@ a:focus-visible {
   .privacy {
     padding: 48px;
   }
+
+  .desktop-callout {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .desktop-actions {
+    display: flex;
+    flex: auto;
+    flex-wrap: wrap;
+  }
 }
 
 @media (max-width: 660px) {
@@ -1276,6 +1324,14 @@ a:focus-visible {
   .two-columns,
   .three-columns {
     grid-template-columns: 1fr;
+  }
+
+  .desktop-callout {
+    padding: 28px 25px;
+  }
+
+  .desktop-actions {
+    display: grid;
   }
 
   .builder-section,

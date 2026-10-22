@@ -7,6 +7,8 @@ browser-only workspace.**
 [View the upstream CLI](https://github.com/Liquid4All/liquid-finetune) ·
 [Report an issue](https://github.com/biolababs/finetune-studio/issues)
 
+The optional [source bundle](https://github.com/biolababs/finetune-studio/releases/latest/download/finetune-studio-source.tar.gz) brings this browser studio, [WebSLM Trainer](https://github.com/webslm-studio/webslm-trainer), Liquid Finetune, and LLaMA-Factory source into one download. It keeps their training environments separate. The hosted page generates Liquid YAML; local training runs from the downloaded tools. See `bundle/README.md` for setup and supported platforms.
+
 [![Deploy Finetune Studio](https://github.com/biolababs/finetune-studio/actions/workflows/pages.yml/badge.svg)](https://github.com/biolababs/finetune-studio/actions/workflows/pages.yml)
 
 Finetune Studio is an independent community interface for
@@ -94,6 +96,8 @@ npm run dev -- --port 8088
 ```bash
 npm run check
 ```
+
+To build the source bundle, run `npm run bundle`. This fetches the exact WebSLM Trainer, Liquid Finetune, and LLaMA-Factory commits recorded in `scripts/build-bundle.mjs`, includes the upstream license files, and writes `release/finetune-studio-source.tar.gz`. A push to `main` publishes the archive in GitHub Releases.
 
 The quality gate runs configuration, parser, DOM/privacy, preview-server,
 workflow-security, and build-artifact checks. The deployable site is written to

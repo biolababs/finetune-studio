@@ -8,6 +8,7 @@
     "dev": "node scripts/serve.mjs",
     "test": "node --test tests/core.test.mjs tests/dom.test.mjs tests/server.test.mjs tests/workflow.test.mjs",
     "build": "node scripts/build.mjs",
+    "bundle": "node scripts/build-bundle.mjs",
     "check": "npm test && npm run build && node --test tests/dist.test.mjs"
   },
   "engines": {
