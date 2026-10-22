@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "An unofficial browser-only configuration studio for Liquid Finetune.",
+  "description": "A local desktop trainer for text, audio, video, and Liquid models with a hosted Liquid YAML builder.",
   "scripts": {
     "dev": "node scripts/serve.mjs",
     "test": "node --test tests/core.test.mjs tests/dom.test.mjs tests/server.test.mjs tests/workflow.test.mjs",
+    "test:desktop": "python -m unittest discover -s tests -p test_studio_core.py",
     "build": "node scripts/build.mjs",
     "bundle": "node scripts/build-bundle.mjs",
-    "check": "npm test && npm run build && node --test tests/dist.test.mjs"
+    "check": "npm test && npm run test:desktop && npm run build && node --test tests/dist.test.mjs"
   },
   "engines": {
     "node": ">=20"

@@ -1,24 +1,38 @@
 # Finetune Studio
 
-**Design, validate, and export Liquid Finetune configurations from a private,
-browser-only workspace.**
+**Train text, audio, video, and Liquid models from one local desktop window.
+The hosted browser page designs and exports Liquid YAML configurations.**
 
 [Launch Finetune Studio](https://biolababs.github.io/finetune-studio/) ·
 [View the upstream CLI](https://github.com/Liquid4All/liquid-finetune) ·
 [Report an issue](https://github.com/biolababs/finetune-studio/issues)
 
-The optional [source bundle](https://github.com/biolababs/finetune-studio/releases/latest/download/finetune-studio-source.tar.gz) brings this browser studio, [WebSLM Trainer](https://github.com/webslm-studio/webslm-trainer), Liquid Finetune, and LLaMA-Factory source into one download. It keeps their training environments separate. The hosted page generates Liquid YAML; local training runs from the downloaded tools. See `bundle/README.md` for setup and supported platforms.
+The [desktop source bundle](https://github.com/biolababs/finetune-studio/releases/latest/download/finetune-studio-source.tar.gz) has one Finetune Studio UI for text, audio, video, and full Liquid YAML training. It includes the browser builder and the source for [WebSLM Trainer](https://github.com/webslm-studio/webslm-trainer), Liquid Finetune, and LLaMA-Factory. The engines install into separate Python environments because their dependencies differ. See [bundle setup](bundle/README.md) for platform requirements and examples.
 
 [![Deploy Finetune Studio](https://github.com/biolababs/finetune-studio/actions/workflows/pages.yml/badge.svg)](https://github.com/biolababs/finetune-studio/actions/workflows/pages.yml)
 
 Finetune Studio is an independent community interface for
-[Liquid Finetune](https://github.com/Liquid4All/liquid-finetune). It converts
-guided training choices into deterministic YAML without uploading the
-configuration or running training on a remote service.
+[Liquid Finetune](https://github.com/Liquid4All/liquid-finetune) and local SLM
+fine-tuning. The hosted builder converts guided training choices into
+deterministic YAML without uploading the configuration. The downloaded desktop
+app runs training on the user's computer.
 
 > [!IMPORTANT]
 > This project is not affiliated with or endorsed by Liquid AI. The Liquid
 > Finetune CLI is the source of truth for complete validation and execution.
+
+## Desktop training
+
+Run `python launch.py` from the extracted bundle. The same window offers a model picker, sample data, dataset validation, output selection, training logs, and Stop for four workflows:
+
+| Workflow | Local engine | Input |
+| --- | --- | --- |
+| Text | WebSLM Trainer with TRL/PEFT, including Liquid LFM2 text recipes | Conversational JSONL |
+| Audio → text | WebSLM Trainer with bundled LLaMA-Factory | JSONL plus audio files |
+| Video → text | WebSLM Trainer with bundled LLaMA-Factory | JSONL plus video files |
+| Full Liquid | Bundled Liquid Finetune CLI | YAML exported by the browser builder |
+
+The archive includes engine source and sample corpora, not model weights or installed dependencies. Audio/video need a suitable GPU; the full Liquid CLI currently targets Python 3.12 on Linux/macOS. The text path was verified with a one-step Liquid LFM2.5-230M CPU run. Audio/video configuration and corpus validation were checked, but end-to-end GPU training remains to be verified on a compatible machine.
 
 ## Product workflow
 
@@ -61,11 +75,10 @@ launching a run.
 2. Select the closest training recipe.
 3. Review the model, dataset, and optimization parameters.
 4. Generate YAML and run browser preflight.
-5. Download the file into a trusted Liquid Finetune checkout.
-6. Run the generated command locally.
+5. Download the YAML and use it in the desktop app's **liquid** workflow, or run it in a Liquid Finetune checkout.
 
-Finetune Studio does not install dependencies, download models, access datasets,
-or execute training.
+The hosted page does not install dependencies, download models, access datasets,
+or execute training. Training runs from the downloaded desktop source bundle.
 
 ## Local development
 
