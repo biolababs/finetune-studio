@@ -34,7 +34,7 @@ jobs:
       - name: Build bundle
         run: npm run bundle
       - name: Upload workflow artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: finetune-studio-source
           path: release/finetune-studio-source.tar.gz
